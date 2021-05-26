@@ -141,5 +141,3 @@ if __name__ == '__main__':
                 line = get_proxy()
                 resp = req_get(url_page)
                 save_com(resp)
-
-    # out_file.close()
