@@ -115,7 +115,6 @@ def getDistrictList() -> set:
 if __name__ == '__main__':
     use_proxy = 0
     kw = '北京市'
-    # out_file = open(r'D:\data.txt', 'a')
     host = MysqlEnviron.host
     if use_proxy == 1:
         line = get_proxy()
