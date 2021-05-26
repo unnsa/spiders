@@ -2,26 +2,21 @@
 # -*-: coding: utf-8 -*-
 
 
-from dbutils.pooled_db import PooledDB
-from config import MysqlEnviron
 import logging as log
+
 import pymysql
+from dbutils.pooled_db import PooledDB
 
-# connection_pool = PooledDB(creator=pymysql,
-#                            maxconnections=20,
-#                            host=MysqlEnviron.CONFIG.host,
-#                            port=MysqlEnviron.port,
-#                            db=MysqlEnviron.database,
-#                            user=MysqlEnviron.username,
-#                            passwd=MysqlEnviron.password)
+from config import MysqlEnviron
 
+environ = MysqlEnviron()
 connection_pool = PooledDB(creator=pymysql,
                            maxconnections=20,
-                           host='10.143.133.42',
-                           port=3306,
-                           db='spider_qichacha',
-                           user='bigdata',
-                           passwd='zcbigdata')
+                           host=environ.host,
+                           port=environ.port,
+                           db=environ.database,
+                           user=environ.username,
+                           passwd=environ.password)
 
 
 def save_company_summary(data: dict):

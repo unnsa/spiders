@@ -15,7 +15,7 @@ def get_proxy():
     # 需要根据自己ip代理服务构造一个函数
     # 返回一个ip地址
     # 格式"http://000.000.000.000:0000"
-    return line
+    return requests.get("http://127.0.0.1:5010/get/").json()
 
 
 def req_get_proxy(url):
@@ -130,7 +130,7 @@ if __name__ == '__main__':
         tnum = int(jd['result']['totalNumFound'])
         page = tnum // 10 + 1
         for p in range(page):
-            time.sleep(random.randint(1, 9))
+            time.sleep(random.randint(1, 5))
             headers.setdefault('Referer', 'https://aiqicha.baidu.com/s?q=%E5%B9%BF%E4%B8%9C%E7%9C%81&t=3')
             url_page = 'https://aiqicha.baidu.com/s/l?q=%s&t=&p=%d&s=10&o=0&f={}' % (district, p + 1)
             try:

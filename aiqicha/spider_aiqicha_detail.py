@@ -1,4 +1,5 @@
 import json
+import random
 import time
 
 import requests
@@ -87,6 +88,7 @@ def save_com(pid, basic_data, comp_manage, focal_point):
     companyDetail.equitypledge = json.dumps(json.loads(focal_point.text)['data']['equitypledge']).encode(
         'utf-8').decode("unicode_escape")
     save_company_Detail(companyDetail.__dict__)
+    print(pid + "保存成功")
 
 
 headers = {
@@ -99,7 +101,7 @@ headers = {
 
 
 def getAndSaveCompanyDetail(pid):
-    time.sleep(2)
+    time.sleep(random.randint(1, 5))
     # 基础数据
     basic_data = req_get('https://aiqicha.baidu.com/detail/basicAllDataAjax?pid=%s' % (pid))
     # 经营状态
