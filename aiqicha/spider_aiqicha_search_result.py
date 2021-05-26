@@ -5,8 +5,6 @@ import time
 
 import requests
 
-from aiqicha.spider_aiqicha_detail import getAndSaveCompanyDetail
-from config import MysqlEnviron
 from db.models import CompanySummary
 from db.mysql_connector import save_company_summary
 
