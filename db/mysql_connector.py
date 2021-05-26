@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 # -*-: coding: utf-8 -*-
-"""
-:author: albert
-:date: 03/07/2019
-"""
+
 
 from dbutils.pooled_db import PooledDB
 from config import MysqlEnviron
