@@ -104,10 +104,13 @@ def getAndSaveCompanyDetail(pid):
     time.sleep(random.randint(1, 5))
     # 基础数据
     basic_data = req_get('https://aiqicha.baidu.com/detail/basicAllDataAjax?pid=%s' % (pid))
+    time.sleep(random.randint(1, 5))
     # 经营状态
     comp_manage = req_get('https://aiqicha.baidu.com/detail/compManageAjax?pid=%s' % (pid))
+    time.sleep(random.randint(1, 5))
     # 重点关注
     focal_point = req_get('https://aiqicha.baidu.com/detail/focalPointAjax?pid=%s' % (pid))
+    time.sleep(random.randint(1, 5))
     # 新闻资讯
     yuqing = req_get('https://aiqicha.baidu.com/yuqing/topicAjax?pid=%s&p=1' % (pid))
     save_com(pid, basic_data, comp_manage, focal_point)

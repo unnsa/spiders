@@ -70,16 +70,22 @@ def write_comp(resp):
 
 def save_com(resp):
     jd = json.loads(resp.text)
+    count = 0
     for comp in jd['data']['resultList']:
+        if count >= 1000:
+            break
         companySummary = CompanySummary()
         companySummary.pid = comp['pid']
         companySummary.ent_name = json.dumps(comp['entName']).encode('utf-8').decode("unicode_escape") \
             .replace('<em>', '').replace('</em>', '')
+        if not companySummary.ent_name.endswith('有限公司"'):
+            continue
         companySummary.ent_type = json.dumps(comp['entType']).encode('utf-8').decode("unicode_escape")
         companySummary.domicile = json.dumps(comp['domicile']).encode('utf-8').decode("unicode_escape") \
             .replace('<em>', '').replace('</em>', '')
         save_company_summary(companySummary.__dict__)
-        getAndSaveCompanyDetail(comp['pid'])
+        count = count + 1
+        # getAndSaveCompanyDetail(comp['pid'])
 
 
 headers = {
@@ -111,14 +117,7 @@ def getDistrictList() -> set:
     return set(districtList)
 
 
-# 有代理池的把use_proxy的值改成1
-if __name__ == '__main__':
-    use_proxy = 0
-    kw = '北京市'
-    host = MysqlEnviron.host
-    if use_proxy == 1:
-        line = get_proxy()
-        req_get = req_get_proxy
+def start():
     district_list = getDistrictList()
     for district in district_list:
         url0 = 'https://aiqicha.baidu.com/s?q=%s&t=3' % (district)
@@ -131,12 +130,31 @@ if __name__ == '__main__':
         page = tnum // 10 + 1
         for p in range(page):
             time.sleep(random.randint(1, 5))
-            headers.setdefault('Referer', 'https://aiqicha.baidu.com/s?q=%E5%B9%BF%E4%B8%9C%E7%9C%81&t=3')
-            url_page = 'https://aiqicha.baidu.com/s/l?q=%s&t=&p=%d&s=10&o=0&f={}' % (district, p + 1)
-            try:
-                resp = req_get(url_page)
-                save_com(resp)
-            except:
-                line = get_proxy()
-                resp = req_get(url_page)
-                save_com(resp)
+            save_company_pid(district, p)
+
+
+start_time = 0
+
+
+def save_company_pid(district, p):
+    headers.setdefault('Referer', 'https://aiqicha.baidu.com/s?q=%E5%B9%BF%E4%B8%9C%E7%9C%81&t=3')
+    url_page = 'https://aiqicha.baidu.com/s/l?q=%s&t=&p=%d&s=10&o=0&f={}' % (district, p + 1)
+    try:
+        resp = req_get(url_page)
+        save_com(resp)
+    except Exception as ex:
+        print(ex)
+        global start_time
+        if start_time == 0:
+            start_time = time.time()
+        print("出现验证码时间%s" % start_time)
+        time.sleep(random.randint(60, 300))
+        save_company_pid(district, p)
+        end_time = time.time()
+        print("重试成功的时间%s" % start_time)
+        print("重试成功的时间间隔%s" % (end_time - start_time))
+
+
+# 有代理池的把use_proxy的值改成1
+if __name__ == '__main__':
+    start()
