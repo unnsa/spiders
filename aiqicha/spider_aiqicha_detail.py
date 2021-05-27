@@ -120,12 +120,12 @@ def getAndSaveCompanyDetail(pid):
         global exception_start_time
         if exception_start_time == 0:
             exception_start_time = time.time()
-        print("出现验证码时间%s" % start_time)
+            print("出现验证码时间%s" % exception_start_time)
         time.sleep(random.randint(60, 300))
         getAndSaveCompanyDetail(pid)
-        end_time = time.time()
-        print("重试成功的时间%s" % end_time)
-        print("重试成功的时间间隔%s" % (end_time - exception_start_time))
+        exception_end_time = time.time()
+        print("重试成功的时间%s" % exception_end_time)
+        print("重试成功的时间间隔%s" % (exception_end_time - exception_start_time))
 
 
 # 有代理池的把use_proxy的值改成1
